@@ -18,11 +18,12 @@ class CreateNewsTable extends Migration
             $table->foreignId('category_id');
             $table->foreignId('user_id');
             $table->string('title');
-            $table->string('news_thumbnail');
+            $table->string('slug')->unique();
+            $table->string('thumbnail');
             $table->text('content');
             $table->timestamp('published_at');
             $table->timestamps();
-            $table->integer('number_of_visitor');
+            $table->integer('number_of_visitor')->default(0);
         });
     }
 

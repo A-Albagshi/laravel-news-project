@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\News;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
+
 
 class NewsController extends Controller
 {
@@ -41,7 +44,28 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // ddd($request);
+
+        $request->validate([
+            'title' => 'required',
+            'thumbnail' => 'required|image',
+            'content' => 'required',
+            'category_id' => ['required', Rule::exists('categories', 'id')]
+        ]);
+
+        $news = new News;
+
+        $news->title = $request->title;
+        $news->slug = Str::slug($request->title, '-');
+        $news->content = $request->content;
+        $news->published_at = now();
+        $news->category_id = $request->category_id;
+        $news->user_id = auth()->id();
+        $news->thumbnail = $request->file('thumbnail')->store('posts/thumbnails');
+
+        $news->save();
+
+        return redirect()->route('news')->with('success', 'News has been created successfully');
     }
 
     /**

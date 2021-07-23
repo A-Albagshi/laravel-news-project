@@ -62,21 +62,30 @@
 </head>
 <div>
     <div class="mt-5 md:mt-0 md:col-span-2">
-        <form action="#" method="POST">
+        <form action="{{ route('news.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
             <div class="shadow sm:rounded-md sm:overflow-hidden">
                 <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
                     <div class="grid grid-cols-3 gap-6">
                         <div class="col-span-3 sm:col-span-2">
-                            <label for="news_title" class="block text-sm font-medium text-gray-700">
+                            <label for="title" class="block text-sm font-medium text-gray-700">
                                 Title
                             </label>
                             <div class="mt-1 flex rounded-md shadow-sm">
-                                <input type="text" name="news_title" id="news_title"
+                                <input type="text" name="title" id="title"
                                     class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
-                                    placeholder="News Title">
+                                    placeholder="News Title" required>
                             </div>
                         </div>
                     </div>
+                    <label class="block text-sm font-medium text-gray-700">
+                        <span class="text-gray-700">Select</span>
+                        <select name="category_id" id="category_id" class="form-select focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full mt-1 rounded-none rounded-r-md sm:text-sm border-gray-300">
+                          <option value="1">Option 1</option>
+                          <option value="2">Option 2</option>
+                        </select>
+                      </label>
+                      
 
                     <div>
                         <label for="content" class="block text-sm font-medium text-gray-700">
@@ -101,15 +110,17 @@
                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 <div class="flex text-sm text-gray-600">
-                                    <label for="file-upload"
+                                    <label for="thumbnail"
                                         class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
-                                        <span>Upload a file</span>
-                                        <input id="file-upload" name="file-upload" type="file" class="sr-only">
+                                        <span>Upload Thumbnail Image</span>
+                                        <input id="thumbnail" name="thumbnail" type="file" class="sr-only" 
+                                        {{-- required --}}
+                                        >
                                     </label>
-                                    <p class="pl-1">or drag and drop</p>
+                                    
                                 </div>
                                 <p class="text-xs text-gray-500">
-                                    PNG, JPG, GIF up to 10MB
+                                    PNG, JPG, GIF up to 5MB
                                 </p>
                             </div>
                         </div>
