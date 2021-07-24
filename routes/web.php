@@ -27,6 +27,16 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+
+Route::prefix('dashboard')->group(function () {
+    Route::resource('news', NewsController::class , ['except'=> ['index','show']]);
+    Route::get('/news/{news:slug}/edit', [NewsController::class, 'edit']);
+});
+
+Route::get('news', [NewsController::class, 'index'])->name('news');
+Route::get('news/{news:slug}', [NewsController::class, 'show'])->name('news.show');
+
 require __DIR__ . '/auth.php';
 
-Route::resource('news', NewsController::class);
+
+Route::resource('news.comments', CommentController::class);

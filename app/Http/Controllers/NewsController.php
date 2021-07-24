@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\News;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -10,6 +11,7 @@ use Illuminate\Support\Str;
 
 class NewsController extends Controller
 {
+    
 
     public function __construct()
     {
@@ -22,7 +24,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return view('home', ['news' => News::orderBy('published_at')->paginate(10)]);
+        return view('home', ['news' => News::with('category')->latest()->paginate(10)]);
     }
 
     /**
@@ -32,8 +34,9 @@ class NewsController extends Controller
      */
     public function create()
     {
-        //
-        return view('create');
+        return view('create',[
+            'category' => Category::all()
+        ]);
     }
 
     /**
@@ -50,7 +53,7 @@ class NewsController extends Controller
             'title' => 'required',
             'thumbnail' => 'required|image',
             'content' => 'required',
-            // 'category_id' => ['required', Rule::exists('categories', 'id')]
+            'category_id' => ['required', Rule::exists('categories', 'id')]
         ]);
 
         $news = new News;
@@ -75,8 +78,10 @@ class NewsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(News $news)
-    {
-        //
+    {   
+        return view('show',[
+            'news' => News::with(['category'])->where('id', '=', $news->id)->first()
+        ]);
     }
 
     /**
@@ -87,7 +92,10 @@ class NewsController extends Controller
      */
     public function edit(News $news)
     {
-        //
+        return view('edit',[
+            'news' => $news,
+            'category' => Category::all()
+        ]);
     }
 
     /**
@@ -99,7 +107,26 @@ class NewsController extends Controller
      */
     public function update(Request $request, News $news)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'category_id' => ['required', Rule::exists('categories', 'id')]
+        ]);
+
+        if($request->hasFile('thumbnail')){
+            $request->validate([
+              'thumbnail' => 'required|image',
+            ]);
+            $news->thumbnail = $request->file('thumbnail')->store('posts/thumbnails','public');
+        }
+
+        $news->title = $request->title;
+        $news->slug = Str::slug($request->title, '-');
+        $news->content = $request->content;
+        $news->category_id = $request->category_id;
+        $news->save();
+
+        return redirect('/news');
     }
 
     /**
@@ -110,6 +137,7 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
-        //
+        $news->delete();
+        return redirect('/news');
     }
 }

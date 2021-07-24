@@ -9,9 +9,12 @@ class News extends Model
 {
     use HasFactory;
 
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
-
-    public function categories()
+    public function category()
     {
         return $this->belongsTo(Category::class);
     }
