@@ -50,7 +50,7 @@ class NewsController extends Controller
             'title' => 'required',
             'thumbnail' => 'required|image',
             'content' => 'required',
-            'category_id' => ['required', Rule::exists('categories', 'id')]
+            // 'category_id' => ['required', Rule::exists('categories', 'id')]
         ]);
 
         $news = new News;
@@ -61,11 +61,11 @@ class NewsController extends Controller
         $news->published_at = now();
         $news->category_id = $request->category_id;
         $news->user_id = auth()->id();
-        $news->thumbnail = $request->file('thumbnail')->store('posts/thumbnails');
+        $news->thumbnail = $request->file('thumbnail')->store('posts/thumbnails','public');
 
         $news->save();
 
-        return redirect()->route('news')->with('success', 'News has been created successfully');
+        return redirect('/news');
     }
 
     /**

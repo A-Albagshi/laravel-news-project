@@ -8,5 +8,16 @@
 </head>
 <body>
         <h1>tests</h1>
+        {{$news->count()}}
+
+        @foreach ($news as $news)
+        
+        <img src="{{ asset('storage/' . $news->thumbnail) }}" width=500>
+        <a href="/news/{{$news->slug}}">
+            {{-- {{ddd($news)}} --}}
+            <h1>{{$news->title}}</h1>
+        </a>
+        {!!$news->content!!}
+        @endforeach
 </body>
 </html>

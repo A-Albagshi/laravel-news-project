@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\NewsController;
 use Illuminate\Support\Facades\Route;
-
+use \UniSharp\LaravelFilemanager\Lfm;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// For FileManager
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+    Lfm::routes();
+});
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -22,6 +27,6 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 Route::resource('news', NewsController::class);
