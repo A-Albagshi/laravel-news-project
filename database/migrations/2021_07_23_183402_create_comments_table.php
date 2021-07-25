@@ -19,6 +19,7 @@ class CreateCommentsTable extends Migration
             $table->string('commenter');
             $table->text('body');
             $table->boolean('is_approved')->default(false);
+            $table->boolean('is_visible')->default(false);
             $table->timestamps();
 
             $table->foreign('news_id')->references('id')->on('news')->cascadeOnDelete();
