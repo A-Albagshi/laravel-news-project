@@ -9,6 +9,11 @@ class Category extends Model
 {
     use HasFactory;
 
+    public static function newsCount()
+    {
+        return Category::withCount('news')->get()->map(fn ($category) => ['id' => $category->id, 'name' => $category->name, 'count' => $category->news_count]);
+    }
+
     public function news()
     {
         return $this->hasMany(News::class);

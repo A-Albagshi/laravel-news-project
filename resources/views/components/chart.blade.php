@@ -12,9 +12,18 @@
 
 @push('end_scripts')
     <script>
+        
         var arr = {!! $data !!}
+        console.log(arr[0].name)
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF'.split('');
+            colors=[];
+            for (let i = 0; i < arr.length; i++) {
+                this.colors.push('#' + Math.floor(Math.random() * 16777215).toString(16));
+            }
+            return colors;
+        }
         var ctx = document.getElementById('{{ $slot }}').getContext('2d');
-        // const data = ;
         var myChart = new Chart(ctx, {
             type: 'pie',
             data: {
@@ -26,11 +35,7 @@
                     data: arr.map((item) => {
                         return item.count
                     }),
-                    backgroundColor: [
-                        'rgb(255, 99, 132)',
-                        'rgb(54, 162, 235)',
-                        'rgb(255, 205, 86)'
-                    ],
+                    backgroundColor: getRandomColor(),
                     hoverOffset: 4
                 }]
             }
