@@ -28,7 +28,7 @@ class NewsFactory extends Factory
             'category_id' => Category::factory(),
             'title' => $this->faker->sentence(),
             'slug' => $this->faker->slug(),
-            'content' => '<p>' . implode('</p><p>', $this->faker->paragraphs(6)) . '</p>',
+            'content' => '<p>' . implode('</p><p>', $this->faker->paragraphs(10)) . '</p>',
             'published_at' => now(),
             'number_of_visitor' => 0,
             'thumbnail' => 'posts/thumbnails/UxFvdgzmYALnflLjB6vhtHI1taJXIc1BxptXjH1m.png'
