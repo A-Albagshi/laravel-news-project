@@ -24,7 +24,11 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return view('home', ['news' => News::with('category')->latest()->paginate(10)]);
+        return view('home', [
+            'news' => News::with('category')->latest()
+            ->filter(request(['search', 'author']))
+            ->paginate(10)
+        ]);
     }
 
     /**
@@ -79,8 +83,9 @@ class NewsController extends Controller
      */
     public function show(News $news)
     {   
+        $news->increment('number_of_visitor');
         return view('show',[
-            'news' => News::with(['category'])->where('id', '=', $news->id)->first()
+            'news' => News::with(['category' , 'comments'])->where('id', '=', $news->id)->first(),
         ]);
     }
 
