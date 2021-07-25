@@ -509,30 +509,34 @@
         integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
 </head>
 <body>
+    {{-- {{ddd($news->links())}} --}}
+    
     {{ $news->count() }}
     <a href="{{ route('news.create') }}">Create news</a>
     <div class="container mx-auto flex flex-wrap">
-
+        
         <!-- News Section -->
-        <section class="w-full md:w-2/3 flex flex-col items-center px-3">
-            @foreach ($news as $news)
-                <article class="flex flex-col shadow my-4">
+        <section class="w-full grid lg:grid-cols-2 grid-cols-1  gap-4  px-3">
+            
+            @foreach ($news as $News)
+                <article class="flex flex-col  shadow my-4">
                     <!-- News Thumbnail -->
-                    <a href="{{ route('news.show', $news->slug) }}" class="hover:opacity-75">
-                        <img src="{{ asset('storage/' . $news->thumbnail) }}">
+                    <a href="{{ route('news.show', $News->slug) }}" class="hover:opacity-75">
+                        <img src="{{ asset('storage/' . $News->thumbnail) }}">
                     </a>
                     <div class="bg-white flex flex-col justify-start p-6">
                         <a href="#"
-                            class="text-blue-700 text-sm font-bold uppercase pb-4">{{ $news->category->name }}</a>
-                        <a href="{{ route('news.show', $news->slug) }}"
-                            class="text-3xl font-bold hover:text-gray-700 pb-4"> {{ Str::title($news->title) }}</a>
+                            class="text-blue-700 text-sm font-bold uppercase pb-4">{{ $News->category->name }}</a>
+                        <a href="{{ route('news.show', $News->slug) }}"
+                            class="text-3xl font-bold hover:text-gray-700 pb-4"> {{ Str::title($News->title) }}</a>
                         <p href="#" class="text-sm pb-3">
-                            By <a href="?author={{ $news->author->name }}"
-                                class="font-semibold hover:text-gray-800">{{ $news->author->name }}</a>, Published on
-                            {{ $news->published_at }}
+                            By <a href="?author={{ $News->author->name }}"
+                                class="font-semibold hover:text-gray-800">{{ $News->author->name }}</a>, Published on
+                            {{  date('d/M/Y', strtotime($News->published_at)) }}
+                            {{$News->created_at->diffForHumans()}}
                         </p>
-                        <p class="pb-6"> {!! Str::words(substr($news->content, strpos($news->content, '<p'), strpos($news->content, '</p>') + 4), 40, '...')  !!} </p>
-                        <a href="{{ route('news.show', $news->slug) }}"
+                        <p class="pb-6"> {!! Str::words(substr($News->content, strpos($News->content, '<p'), strpos($News->content, '</p>') + 4), 40, '...')  !!} </p>
+                        <a href="{{ route('news.show', $News->slug) }}"
                             class="uppercase text-gray-800 hover:text-black">Continue Reading <svg
                                 class="svg-inline--fa fa-arrow-right fa-w-14" aria-hidden="true" focusable="false"
                                 data-prefix="fas" data-icon="arrow-right" role="img" xmlns="http://www.w3.org/2000/svg"
@@ -544,14 +548,8 @@
                     </div>
                 </article>
             @endforeach
-
-            <!-- Pagination -->
-            {{-- <div class="flex items-center py-8">
-                <a href="#" class="h-10 w-10 bg-blue-800 hover:bg-blue-600 font-semibold text-white text-sm flex items-center justify-center">1</a>
-                <a href="#" class="h-10 w-10 font-semibold text-gray-800 hover:bg-blue-600 hover:text-white text-sm flex items-center justify-center">2</a>
-                <a href="#" class="h-10 w-10 font-semibold text-gray-800 hover:text-gray-900 text-sm flex items-center justify-center ml-3">Next <svg class="svg-inline--fa fa-arrow-right fa-w-14 ml-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path></svg><!-- <i class="fas fa-arrow-right ml-2"></i> --></a>
-            </div> --}}
-
+            
+            {{$news->links()}}
         </section>
 
 
