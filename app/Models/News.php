@@ -14,15 +14,11 @@ class News extends Model
         $query->when(
             $filters['search'] ?? false,
             fn ($query, $search) =>
-            $query->where(fn ($query) =>
-            $query->where('title', 'like', '%' . $search . '%')
-                ->orWhere('content', 'like', '%' . $search . '%')
-                ->whereHas(
-                    'author',
-                    fn ($query) =>
-                    $query->where('name', 'like', '%' . $search . '%')
-                )
-                )
+            $query->where(
+                fn ($query) =>
+                $query->where('title', 'like', '%' . $search . '%')
+                    ->orWhere('content', 'like', '%' . $search . '%')
+            )
         );
 
 
@@ -35,6 +31,16 @@ class News extends Model
                 $query->where('name', 'like', '%' . $author . '%')
             )
         );
+    }
+
+    public static function getSimilarNews($news)
+    {
+        $similarNews = News::where('category_id', '=', $news->category_id)->where('id', '!=', $news->id)->with('category')->get();
+        $News = collect($similarNews);
+        if ($similarNews->count() < 2) {
+            $News =[...$News,...News::with('category')->latest()->skip(1)->where('id', '!=', $news->id)->take(2 - $similarNews->count())->get()];
+        }
+        return $News;
     }
 
     public function author()

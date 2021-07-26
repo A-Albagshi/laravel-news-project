@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 
 class NewsController extends Controller
 {
-    
+
 
     public function __construct()
     {
@@ -24,10 +24,17 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return view('home', [
+        return view('landing-page', [
             'news' => News::with('category')->latest()
-            ->filter(request(['search', 'author']))
-            ->paginate(10)
+                ->paginate(10)
+        ]);
+    }
+
+    public function allNews(){
+        return view('all-news', [
+            'news' => News::with('category')->latest()
+                ->filter(request(['search', 'author']))
+                ->paginate(10)->withQueryString()
         ]);
     }
 
@@ -38,7 +45,7 @@ class NewsController extends Controller
      */
     public function create()
     {
-        return view('create',[
+        return view('create', [
             'category' => Category::all()
         ]);
     }
@@ -68,7 +75,7 @@ class NewsController extends Controller
         $news->published_at = now();
         $news->category_id = $request->category_id;
         $news->user_id = auth()->id();
-        $news->thumbnail = $request->file('thumbnail')->store('posts/thumbnails','public');
+        $news->thumbnail = $request->file('thumbnail')->store('posts/thumbnails', 'public');
 
         $news->save();
 
@@ -82,10 +89,11 @@ class NewsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(News $news)
-    {   
+    {
         $news->increment('number_of_visitor');
-        return view('show',[
-            'news' => News::with(['category' , 'comments'])->where('id', '=', $news->id)->first(),
+        return view('show', [
+            'news' => News::with(['category', 'comments'])->where('id', '=', $news->id)->first(),
+            'similarNews' => News::getSimilarNews($news)
         ]);
     }
 
@@ -97,7 +105,7 @@ class NewsController extends Controller
      */
     public function edit(News $news)
     {
-        return view('edit',[
+        return view('edit', [
             'news' => $news,
             'category' => Category::all()
         ]);
@@ -118,11 +126,11 @@ class NewsController extends Controller
             'category_id' => ['required', Rule::exists('categories', 'id')]
         ]);
 
-        if($request->hasFile('thumbnail')){
+        if ($request->hasFile('thumbnail')) {
             $request->validate([
-              'thumbnail' => 'required|image',
+                'thumbnail' => 'required|image',
             ]);
-            $news->thumbnail = $request->file('thumbnail')->store('posts/thumbnails','public');
+            $news->thumbnail = $request->file('thumbnail')->store('posts/thumbnails', 'public');
         }
 
         $news->title = $request->title;
