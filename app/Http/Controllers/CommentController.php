@@ -16,18 +16,11 @@ class CommentController extends Controller
      */
     public function index()
     {
-        return 'teset';
+        return view('comments', [
+            'comments' => Comment::with('news')->orderBy('is_approved')->orderBy('is_visible')->paginate(15)
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -57,16 +50,6 @@ class CommentController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Comment $comment)
-    {
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Comment  $comment
@@ -74,8 +57,6 @@ class CommentController extends Controller
      */
     public function edit(Comment $comment)
     {
-        //
-        // ddd($comment);
         return view('edit-comment', [
             'comment' => $comment,
         ]);
