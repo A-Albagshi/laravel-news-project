@@ -7,8 +7,11 @@
     @endif
     <div class="">
         <div class="px-4 py-5 bg-white space-y-6 sm:p-6 border-t-2">
-            <h1>Post New Comment</h1>
 
+            @if (isset($comment))
+            @else
+                <h1>Post New Comment</h1>
+            @endif
             <div class="grid grid-cols-3 gap-6">
                 <div class="col-span-6">
                     <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
