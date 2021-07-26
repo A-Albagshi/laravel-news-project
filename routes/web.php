@@ -4,6 +4,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\NewsController;
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\News;
 use Illuminate\Support\Facades\Route;
 use \UniSharp\LaravelFilemanager\Lfm;
 /*
@@ -22,7 +23,6 @@ Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']
     Lfm::routes();
 });
 
-// Route::get('/', );
 
 Route::get('/dashboard', function () {
     return view('dashboard', [
@@ -32,21 +32,21 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 
-Route::prefix('dashboard')->group(function () {
+Route::prefix('dashboard')->middleware(['auth'])->group(function () {
     Route::resource('news', NewsController::class, ['except' => ['index', 'show']]);
-    Route::get('/news/{news:slug}/edit', [NewsController::class, 'edit']);
-    Route::resource('comments', CommentController::class, ['except' => ['index', 'show', 'create']]);
+    Route::get('/news/{news:slug}/edit', [NewsController::class, 'edit'])->name('dashboard.news.edit');
+    Route::resource('comments', CommentController::class, ['except' => ['show', 'create']]);
+    Route::get('/news', function () {
+        return view('dashboard-news', ['news' => News::with('category', 'author', 'comments')->latest()->paginate(10)]);
+    })->name('dashboard.news');
 });
 
 Route::get('/', [NewsController::class, 'index'])->name('news');
 Route::get('news/{news:slug}', [NewsController::class, 'show'])->name('news.show');
 
+Route::post('news/{news:slug}/comments', [CommentController::class, 'store'])->name('news.comments.store');
+
+
+Route::get('allnews', [NewsController::class, 'allNews'])->name('allnews');
 
 require __DIR__ . '/auth.php';
-
-Route::prefix('news')->group(function(){
-    Route::post('{news:slug}/comments', [CommentController::class, 'store'])->name('news.comments.store');
-});
-
-
-Route::get('news', [NewsController::class, 'index'])->name('news');
