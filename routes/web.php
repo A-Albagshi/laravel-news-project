@@ -22,9 +22,7 @@ Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']
     Lfm::routes();
 });
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', );
 
 Route::get('/dashboard', function () {
     return view('dashboard', [
@@ -40,7 +38,7 @@ Route::prefix('dashboard')->group(function () {
     Route::resource('comments', CommentController::class, ['except' => ['index', 'show', 'create']]);
 });
 
-Route::get('news', [NewsController::class, 'index'])->name('news');
+Route::get('/', [NewsController::class, 'index'])->name('news');
 Route::get('news/{news:slug}', [NewsController::class, 'show'])->name('news.show');
 
 
