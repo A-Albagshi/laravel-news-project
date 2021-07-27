@@ -31,6 +31,11 @@
                         {{ __('Comments') }}
                     </x-nav-link>
                 </div>
+                <div class="space-x-8 sm:-my-px sm:ml-10 sm:flex text-white">
+                    <x-nav-link :href="route('contact.index')" :active="request()->routeIs('contact.index')">
+                        {{ __('Inbox') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
