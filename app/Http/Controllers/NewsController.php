@@ -23,15 +23,16 @@ class NewsController extends Controller
     public function index()
     {
         return view('landing-page', [
-            'news' => News::with('category','author')->latest()
+            'news' => News::with('category', 'author')->latest()
                 ->paginate(10)
         ]);
     }
 
-    public function allNews(){
+    public function allNews()
+    {
         return view('all-news', [
-            'news' => News::with('category','author')->latest()
-                ->filter(request(['search', 'author','category']))
+            'news' => News::with('category', 'author')->latest()
+                ->filter(request(['search', 'author', 'category']))
                 ->paginate(10)->withQueryString()
         ]);
     }
@@ -57,7 +58,7 @@ class NewsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => ['required','unique:news,title'],
+            'title' => ['required', 'unique:news,title'],
             'thumbnail' => 'required|image',
             'content' => 'required',
             'category_id' => ['required', Rule::exists('categories', 'id')]
@@ -75,7 +76,7 @@ class NewsController extends Controller
 
         $news->save();
 
-        return redirect('/news/'.$news->slug);
+        return redirect('/news/' . $news->slug);
     }
 
     /**
@@ -88,7 +89,7 @@ class NewsController extends Controller
     {
         $news->increment('number_of_visitor');
         return view('show', [
-            'news' => News::with(['category', 'comments','author'])->where('id', '=', $news->id)->first(),
+            'news' => News::with(['category', 'comments', 'author'])->where('id', '=', $news->id)->first(),
             'similarNews' => News::getSimilarNews($news)
         ]);
     }
@@ -117,7 +118,7 @@ class NewsController extends Controller
     public function update(Request $request, News $news)
     {
         $request->validate([
-            'title' => ['required','unique:news,title'],
+            'title' => ['required', (($request->title == $news->title) ? '' : 'unique:news,title')],
             'content' => 'required',
             'category_id' => ['required', Rule::exists('categories', 'id')]
         ]);
@@ -135,7 +136,7 @@ class NewsController extends Controller
         $news->category_id = $request->category_id;
         $news->save();
 
-        return redirect('/news/'.$news->slug);
+        return redirect('/news/' . $news->slug);
     }
 
     /**
