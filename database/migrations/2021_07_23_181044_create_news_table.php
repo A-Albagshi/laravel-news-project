@@ -24,6 +24,8 @@ class CreateNewsTable extends Migration
             $table->timestamp('published_at');
             $table->timestamps();
             $table->integer('number_of_visitor')->default(0);
+            
+            $table->foreign('category_id')->references('id')->on('categories')->cascadeOnDelete();
         });
     }
 
