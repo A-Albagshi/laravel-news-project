@@ -11,11 +11,9 @@ use Illuminate\Support\Str;
 
 class NewsController extends Controller
 {
-
-
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index', 'show']]);
+        $this->middleware('auth', ['except' => ['index', 'show', 'allNews']]);
     }
     /**
      * Display a listing of the resource.
@@ -25,15 +23,15 @@ class NewsController extends Controller
     public function index()
     {
         return view('landing-page', [
-            'news' => News::with('category')->latest()
+            'news' => News::with('category','author')->latest()
                 ->paginate(10)
         ]);
     }
 
     public function allNews(){
         return view('all-news', [
-            'news' => News::with('category')->latest()
-                ->filter(request(['search', 'author']))
+            'news' => News::with('category','author')->latest()
+                ->filter(request(['search', 'author','category']))
                 ->paginate(10)->withQueryString()
         ]);
     }
@@ -58,10 +56,8 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        // ddd($request);
-
         $request->validate([
-            'title' => 'required',
+            'title' => ['required','unique:news,title'],
             'thumbnail' => 'required|image',
             'content' => 'required',
             'category_id' => ['required', Rule::exists('categories', 'id')]
@@ -79,7 +75,7 @@ class NewsController extends Controller
 
         $news->save();
 
-        return redirect('/news');
+        return redirect('/news/'.$news->slug);
     }
 
     /**
@@ -92,7 +88,7 @@ class NewsController extends Controller
     {
         $news->increment('number_of_visitor');
         return view('show', [
-            'news' => News::with(['category', 'comments'])->where('id', '=', $news->id)->first(),
+            'news' => News::with(['category', 'comments','author'])->where('id', '=', $news->id)->first(),
             'similarNews' => News::getSimilarNews($news)
         ]);
     }
@@ -139,7 +135,7 @@ class NewsController extends Controller
         $news->category_id = $request->category_id;
         $news->save();
 
-        return redirect('/news');
+        return redirect('/news/'.$news->slug);
     }
 
     /**
@@ -151,6 +147,6 @@ class NewsController extends Controller
     public function destroy(News $news)
     {
         $news->delete();
-        return redirect('/news');
+        return redirect('/');
     }
 }
