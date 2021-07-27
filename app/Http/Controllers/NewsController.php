@@ -117,7 +117,7 @@ class NewsController extends Controller
     public function update(Request $request, News $news)
     {
         $request->validate([
-            'title' => 'required',
+            'title' => ['required','unique:news,title'],
             'content' => 'required',
             'category_id' => ['required', Rule::exists('categories', 'id')]
         ]);
