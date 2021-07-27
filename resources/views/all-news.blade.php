@@ -7,8 +7,9 @@
                     <div class="bg-white flex items-center rounded-full shadow-xl">
                         <input
                             class="search-input rounded-l-full border-none outline-none w-full py-4 px-6 text-gray-700 leading-tight focus:outline-none"
-                            name="search" value="{{ request('search') }}" id="search" type="text" placeholder="Search" >
-                            <div class="p-4">
+                            name="search" value="{{ request('search') }}" id="search" type="text"
+                            placeholder="Search">
+                        <div class="p-4">
                             <button
                                 class="bg-blue-900 text-white rounded-full p-2 hover:bg-blue-700 focus:outline-none w-12 h-12 flex items-center justify-center">
                                 <i class="fas fa-search"></i>
@@ -23,24 +24,25 @@
     <div class="container mx-auto flex flex-wrap my-3 ">
         <!-- News Section -->
         <section class="w-full grid lg:grid-cols-6 grid-cols-1 gap-8 px-6 h-100">
-        @if ($news->count())
-        <x-news-card class="lg:col-span-4 max-w-5xl justify-self-center" :news="$news[0]"></x-news-card>
-        @if ($news->count()>1)
-        <x-news-card class="lg:col-span-2 max-w-5xl justify-self-center" :news="$news[1]"></x-news-card>
-        @endif
-            @foreach ($news->skip(2) as $News)
-                <x-news-card class="{{ $loop->iteration < 3 ? 'lg:col-span-3' : 'lg:col-span-2' }} " :news="$News">
-                </x-news-card>
-            @endforeach
-        @else
-        @if(request('search')!='')
-        <h1 class="text-center col-span-6">No News With {{request('search')}} in it.</h1>
-        
-        @else
-        <h1 class="text-center col-span-6">No News yet. Please check back later.</h1>
+            @if ($news->count())
+                <x-news-card class="lg:col-span-4 max-w-5xl" :news="$news[0]"></x-news-card>
+                @if ($news->count() > 1)
+                    <x-news-card class="lg:col-span-2 max-w-5xl" :news="$news[1]"></x-news-card>
+                @endif
+                @foreach ($news->skip(2) as $News)
+                    <x-news-card class="{{ $loop->iteration < 3 ? 'lg:col-span-3' : 'lg:col-span-2' }} "
+                        :news="$News">
+                    </x-news-card>
+                @endforeach
+            @else
+                @if (request('search') != '')
+                    <h1 class="text-center col-span-6">No News With {{ request('search') }} in it.</h1>
 
-        @endif
-        @endif
+                @else
+                    <h1 class="text-center col-span-6">No News yet. Please check back later.</h1>
+
+                @endif
+            @endif
         </section>
         <div class="flex-1 px-3 my-3">
             {{ $news->links() }}
