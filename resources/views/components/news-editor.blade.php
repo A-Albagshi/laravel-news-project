@@ -1,16 +1,12 @@
 @props(['action', 'news', 'category'])
 
 @push('scripts')
-<script src="https://cdn.tiny.cloud/1/h6s7lt4dpnp3h0yulywraylzo43tlkkfdlwepyakrkkge7qp/tinymce/5/tinymce.min.js"
-referrerpolicy="origin"></script>
-<script src="{{ URL::asset('js/editorConfig.js') }}"></script>
+    <script src="https://cdn.tiny.cloud/1/h6s7lt4dpnp3h0yulywraylzo43tlkkfdlwepyakrkkge7qp/tinymce/5/tinymce.min.js"
+        referrerpolicy="origin"></script>
+    <script src="{{ URL::asset('js/editorConfig.js') }}"></script>
 @endpush
 
 
-
-{{-- {{ddd($news->category?? '')}} --}}
-
-{{-- {{ddd()}} --}}
 <div class="mt-5 md:mt-0 md:col-span-2">
     <form action="{{ $action }}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -25,16 +21,17 @@ referrerpolicy="origin"></script>
                         <label for="title" class="block text-sm font-medium text-gray-700">
                             Title
                         </label>
-                        <div class="mt-1 flex rounded-md shadow-sm">            {{--$news->title ?? '' old('title') --}}
-                            <input type="text" name="title" id="title" value="{{ $news->title ?? '' }}"
+                        <div class="mt-1 flex rounded-md shadow-sm"> {{-- $news->title ?? '' old('title') --}}
+                            <input type="text" name="title" id="title"
+                                value="{{ old('title') !== null ? old('title') : $news->title ?? '' }}"
                                 class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
                                 placeholder="News Title" required>
-                            </div>
                         </div>
                     </div>
-                    @error('title')
+                </div>
+                @error('title')
                     <p class="text-red-500 text-md mt-2">{{ $message }}</p>
-                    @enderror
+                @enderror
                 <label class="block text-sm font-medium text-gray-700">
                     <span class="text-gray-700">Select a Category</span>
                     <select name="category_id" id="category_id"
@@ -55,7 +52,7 @@ referrerpolicy="origin"></script>
                     </label>
                     <div class="mt-1">
                         <textarea id="content" name="content" placeholder="News Body">
-                            {{ $news->content ?? '' }}
+                            {{ old('content') !== null ? old('content') : $news->content ?? '' }}
                         </textarea>
                     </div>
                 </div>
@@ -78,7 +75,7 @@ referrerpolicy="origin"></script>
                                     class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
                                     <span>Upload Thumbnail Image</span>
                                     <input id="thumbnail" name="thumbnail" type="file" class="sr-only"
-                                        {{!isset($news) ? 'required' : ''}}>
+                                        {{ !isset($news) ? 'required' : '' }}>
                                 </label>
                             </div>
                             <p class="text-xs text-gray-500">

@@ -1,7 +1,7 @@
 <x-news>
     <div class="container mx-auto flex flex-wrap py-6">
         <div class="flex flex-col w-full md:w-2/3 items-center justify-between">
-            <section class=" flex flex-col   mx-auto">
+            <section class=" flex flex-col   mx-auto max-w-4xl">
                 {{-- <p class="text-3xl font-bold hover:text-indigo-700"></p> --}}
                 <article class="flex flex-col shadow my-4 rounded-2xl overflow-hidden  mx-auto">
                     <!-- Article Image -->
@@ -35,7 +35,9 @@
                                 </form>
                             </div>
                         @endauth
-                        {!! $news->content !!}
+                        <div class="max-w-4xl break-words">
+                            {!! $news->content !!}
+                        </div>
                     </div>
                 </article>
             </section>

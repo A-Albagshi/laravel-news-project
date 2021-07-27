@@ -3,7 +3,7 @@
 $counter = 0;
 @endphp
 
-<div class="flex flex-col shadow my-4 shadow w-full rounded-2xl overflow-hidden ">
+<div class="flex flex-col shadow my-4 shadow w-full rounded-2xl overflow-hidden max-w-4xl">
 @foreach ($comments as $comment)
         @auth
             <div class="flex flex-row justify-between p-6 border-b-2 {{ ($comment->is_approved && $comment->is_visible == 1) ? 'bg-white': (($comment->is_visible) ? 'bg-gray-700 ' : 'bg-gray-700')  }}">
