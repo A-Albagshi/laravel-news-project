@@ -52,6 +52,7 @@ return [
             'max_size'     => 80000, // size in KB
             'valid_mime'   => [
                 'image/jpeg',
+                'image/jpg',
                 'image/pjpeg',
                 'image/png',
                 'image/gif',
@@ -66,6 +67,7 @@ return [
             'max_size'     => 80000, // size in KB
             'valid_mime'   => [
                 'image/jpeg',
+                'image/jpg',
                 'image/pjpeg',
                 'image/png',
                 'image/gif',

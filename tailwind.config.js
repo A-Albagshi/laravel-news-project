@@ -8,9 +8,9 @@ module.exports = {
     ],
     darkMode: 'class',
     corePlugins: {
-       outline: false,
-      },
-  
+        outline: false,
+    },
+
     theme: {
         extend: {
             fontFamily: {
@@ -23,12 +23,13 @@ module.exports = {
             black: colors.black,
             white: colors.white,
             gray: colors.coolGray,
-          }
+        }
     },
 
     variants: {
         extend: {
             opacity: ['disabled'],
+            objectFit: ['hover', 'focus'],
         },
     },
 
