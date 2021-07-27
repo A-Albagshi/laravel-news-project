@@ -21,6 +21,11 @@ class News extends Model
             )
         );
 
+        $query->when($filters['category'] ?? false, fn($query, $category) =>
+        $query->whereHas('category', fn ($query) =>
+            $query->where('slug', $category)
+        )
+    );
 
         $query->when(
             $filters['author'] ?? false,
@@ -35,10 +40,10 @@ class News extends Model
 
     public static function getSimilarNews($news)
     {
-        $similarNews = News::where('category_id', '=', $news->category_id)->where('id', '!=', $news->id)->with('category')->get();
+        $similarNews = News::where('category_id', '=', $news->category_id)->where('id', '!=', $news->id)->with(['category', 'comments','author'])->get();
         $News = collect($similarNews);
         if ($similarNews->count() < 2) {
-            $News =[...$News,...News::with('category')->latest()->skip(1)->where('id', '!=', $news->id)->take(2 - $similarNews->count())->get()];
+            $News =[...$News,...News::with(['category', 'comments','author'])->latest()->skip(1)->where('id', '!=', $news->id)->take(2 - $similarNews->count())->get()];
         }
         return $News;
     }
