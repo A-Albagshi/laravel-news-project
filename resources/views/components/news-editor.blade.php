@@ -25,13 +25,16 @@ referrerpolicy="origin"></script>
                         <label for="title" class="block text-sm font-medium text-gray-700">
                             Title
                         </label>
-                        <div class="mt-1 flex rounded-md shadow-sm">
+                        <div class="mt-1 flex rounded-md shadow-sm">            {{--$news->title ?? '' old('title') --}}
                             <input type="text" name="title" id="title" value="{{ $news->title ?? '' }}"
                                 class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
                                 placeholder="News Title" required>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    @error('title')
+                    <p class="text-red-500 text-md mt-2">{{ $message }}</p>
+                    @enderror
                 <label class="block text-sm font-medium text-gray-700">
                     <span class="text-gray-700">Select a Category</span>
                     <select name="category_id" id="category_id"
@@ -93,10 +96,4 @@ referrerpolicy="origin"></script>
             </div>
         </div>
     </form>
-    <a href="{{ route('dashboard') }}">
-        <button
-            class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            Back
-        </button>
-    </a>
 </div>

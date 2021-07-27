@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('News Details') }}
+            {{ __('Messages') }}
         </h2>
     </x-slot>
 
@@ -17,86 +17,63 @@
                                         <tr>
                                             <th scope="col"
                                                 class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                                                Author
+                                                Sender Name
                                             </th>
                                             <th scope="col"
                                                 class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                                                News Title
+                                                Sender Email
                                             </th>
                                             <th scope="col"
                                                 class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                                                Category
+                                                Sender Number
                                             </th>
                                             <th scope="col"
                                                 class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                                                Published At
+                                                Message
                                             </th>
                                             <th scope="col"
                                                 class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                                                Number Of Visitor
-                                            </th>
-                                            <th scope="col"
-                                                class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                                                Number Of Comments
+                                                Is Viewed
                                             </th>
                                             <th scope="col" class="relative px-6 py-3">
-                                                <span class="sr-only">Edit</span>
-                                            </th>
-                                            <th scope="col" class="relative px-6 py-3">
-                                                <span class="sr-only">Delete</span>
+                                                <span class="sr-only">Open</span>
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">
-                                        @foreach ($news as $News)
+                                        @foreach ($messages as $message)
                                             <tr>
                                                 <td class="px-6 py-4 whitespace-nowrap">
                                                     <div class="flex items-center">
                                                         <div class="text-sm font-bold text-gray-900">
-                                                            {{ $News->author->name }}</div>
+                                                            {{ $message->name }}</div>
                                                     </div>
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
                                                     <div class="flex items-center">
-                                                        <div class="text-sm  text-indigo-700">
-                                                            <a href="{{route('news.show',$News->slug)}}">
-                                                                {{ Str::limit($News->title, 20, '...') }}
-                                                            </a>
-                                                        </div>
+                                                        <div class="text-sm font-bold text-gray-900">
+                                                            {{ $message->email }}</div>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="flex items-center">
+                                                        <div class="text-sm font-bold text-gray-900">
+                                                            {{ $message->number }}</div>
                                                     </div>
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
                                                     <div class="text-sm text-gray-900">
-                                                        {{ $News->category->name }}</div>
+                                                        {{ Str::limit($message->message, 40, '...') }}</div>
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
-                                                    <div class="flex items-center">
-                                                        {{ $News->published_at }}
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-4 whitespace-nowrap">
-                                                    <div class="flex items-center">
-                                                        {{ $News->number_of_visitor }}
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-4 whitespace-nowrap">
-                                                    <div class="flex items-center">
-                                                        {{ $News->comments->count() }}
-                                                    </div>
+                                                    <span
+                                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ boolval($message->viewed) ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                                        {{ boolval($message->viewed) ? 'Viewd' : 'Not Viewd' }}
+                                                    </span>
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                    <a href="{{ route('dashboard.news.edit', $News->slug) }}"
-                                                        class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                                </td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                    
-                                                    <form action="{{ route('news.destroy', $News->id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit"
-                                                            class="text-red-600 hover:text-red-900">Delete</button>
-                                                    </form>
+                                                    <a href="{{route('contact.show', $message->id)}}"
+                                                        class="text-indigo-600 hover:text-indigo-900">Open Message</a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -107,7 +84,7 @@
                     </div>
                 </div>
             </div>
-            {{ $news->links() }}
+            {{ $messages->links() }}
         </div>
     </div>
 </x-app-layout>

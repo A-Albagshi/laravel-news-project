@@ -7,22 +7,13 @@
 @endonce
 
 <div class="grid p-6 justify-center justify-items-center bg-white border-b border-gray-200">
+    <h1 class="mt-0 text-blue-900">{{Str::title($slot)}}</h1>
     <canvas id="{{ $slot }}" style="width:100%;max-width:400px"></canvas>
 </div>
 
 @push('end_scripts')
     <script>
-        
         var arr = {!! $data !!}
-        console.log(arr[0].name)
-        function getRandomColor() {
-            var letters = '0123456789ABCDEF'.split('');
-            colors=[];
-            for (let i = 0; i < arr.length; i++) {
-                this.colors.push('#' + Math.floor(Math.random() * 16777215).toString(16));
-            }
-            return colors;
-        }
         var ctx = document.getElementById('{{ $slot }}').getContext('2d');
         var myChart = new Chart(ctx, {
             type: 'pie',
@@ -35,7 +26,15 @@
                     data: arr.map((item) => {
                         return item.count
                     }),
-                    backgroundColor: getRandomColor(),
+                    backgroundColor: [
+                        'rgb(24, 90, 219)',
+                        'rgb(10, 25, 49)',
+                        'rgb(255, 201, 71)',
+                        'rgb(0, 173, 181)',
+                        'rgb(232, 69, 69)',
+                        'rgb(236, 239, 164)',
+                    ]
+                ,
                     hoverOffset: 4
                 }]
             }
