@@ -18,7 +18,7 @@
             <a href="/allnews?category={{ $news->category->slug }}"
                 class="text-blue-900 text-2xl hover:text-black font-bold uppercase pb-8 mb-2">
                 {{ $news->category->name }}</a>
-            <div class="mt-4 "> {!! Str::words(substr($news->content, strpos($news->content, '<p'), strpos($news->content, '</p>') + 4), 40, '...') !!} </div>
+            <div class="mt-4 "> {!! Str::words(substr($news->content, strpos($news->content, '<p>'), strpos($news->content, '</p>') + 4), 40, '...') !!} </div>
         </div>
         <a href="{{ route('news.show', $news->slug) }}"
             class="uppercase text-white text-2xl p-10 bg-blue-900 hover:text-gray-200 mt-3 rounded-2xl  items-self-end content-self-end">Read
