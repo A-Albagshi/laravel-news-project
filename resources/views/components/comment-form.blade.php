@@ -7,7 +7,12 @@
     @endif
     <div class="">
         <div class="px-4 py-5 bg-white space-y-6 sm:p-6 border-t-2">
-
+            @if (session('success'))
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
+                    role="success">
+                    <strong class="font-bold">{{ session('success') }}</strong>
+                </div>
+            @endif
             @if (isset($comment))
             @else
                 <h1>Post New Comment</h1>
@@ -40,7 +45,11 @@
             </div>
             <button
                 class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                @if (isset($comment))
+                Edit Comment
+                @else
                 Post Comment
+                @endif
             </button>
 
         </div>

@@ -46,7 +46,7 @@ class CommentController extends Controller
 
         $comment->save();
 
-        return redirect()->back();
+        return redirect()->back()->withSuccess('Comment was received  successfully. and it will be reviewed for approval!');
     }
 
     /**
@@ -72,22 +72,27 @@ class CommentController extends Controller
     public function update(Request $request, Comment $comment)
     {
 
-        $request->validate([
-            'name' => 'required',
-            'comment' => 'required',
-        ]);
-
+        if(isset($request->approved)){
+            $comment->is_approved = true;
+            $comment->is_visible = true;
+            $comment->save();
+            return redirect()->back();
+        }
+        
         $is_approved = isset($request->is_approved) ?? false;
         $is_visible = isset($request->is_visible) ?? false;
-
-        $comment->commenter = $request->name;
-        $comment->body = $request->comment;
+        
+        $comment->commenter = isset($request->name) ? $request->name :$comment->commenter;
+        if(isset($request->comment) && isset($request->commenter)){
+            ddd($comment->body);
+            $comment->body = $request->comment;
+        }
+        // $comment->body =  isset($request->comment) ? $request->comment : $comment->body;
         $comment->is_approved = $is_approved;
         $comment->is_visible = $is_visible;
         
         $comment->save();
-
-        return redirect('/news');
+        return redirect()->route('comments.index');
 
     }
 

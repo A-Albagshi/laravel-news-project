@@ -13,8 +13,8 @@ class Comment extends Model
     {
 
         return collect([
-            ['name' => 'visible', 'count' => Comment::where('is_visible', true)->count()],
-            ['name' => 'hidden', 'count' => Comment::where('is_visible', false)->count()]
+            ['name' => 'Visible Comments', 'count' => Comment::where('is_visible', true)->count()],
+            ['name' => 'Hidden Comments', 'count' => Comment::where('is_visible', false)->count()]
         ]);
     }
 

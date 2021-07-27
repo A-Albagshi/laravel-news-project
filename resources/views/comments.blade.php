@@ -38,6 +38,9 @@
                                             <th scope="col" class="relative px-6 py-3">
                                                 <span class="sr-only">Edit</span>
                                             </th>
+                                            <th scope="col" class="relative px-6 py-3">
+                                                <span class="sr-only">Delete</span>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">
@@ -51,8 +54,9 @@
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
                                                     <div class="flex items-center">
-                                                        <div class="text-sm  text-gray-900">
-                                                            {{ Str::limit($comment->news->title, 20, '...') }}</div>
+                                                        <div class="text-sm  text-indigo-700">
+                                                            <a href="{{ route('news.show', $comment->news->slug) }}">{{ Str::limit($comment->news->title, 20, '...') }}
+                                                        </div></a>
                                                     </div>
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -72,8 +76,17 @@
                                                     </span>
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                    <a href="{{route('comments.edit', $comment->id)}}"
+                                                    <a href="{{ route('comments.edit', $comment->id) }}"
                                                         class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                    <form action="{{ route('comments.destroy', $comment->id) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                            class="text-red-600 hover:text-red-900">Delete</button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                         @endforeach
