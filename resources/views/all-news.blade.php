@@ -4,8 +4,8 @@
             <div
                 class="w-full container mx-auto flex flex-col sm:flex-row items-center justify-center text-sm font-bold uppercase mt-0 px-6 py-2">
                 <form method="GET" action="/allnews">
-                    <div class="flex flex row">
-                        <select name="category" id="category" class="rounded-full shadow-xl mr-4 border-0 py-4 px-10">
+                    <div class="flex flex-col lg:flex-row">
+                        <select name="category" id="category" class="rounded-full shadow-xl mr-4 border-0 py-4 px-10 mb-4 lg:mb-0">
                             <option value="">Select Category</option>
                             @foreach ($categories as $category)
                             <option value="{{$category->slug}}">{{$category->name}}</option>
