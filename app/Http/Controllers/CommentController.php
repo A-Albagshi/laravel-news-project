@@ -83,8 +83,8 @@ class CommentController extends Controller
         $is_visible = isset($request->is_visible) ?? false;
         
         $comment->commenter = isset($request->name) ? $request->name :$comment->commenter;
-        if(isset($request->comment) && isset($request->commenter)){
-            ddd($comment->body);
+        // ddd(isset($request->comment) && isset($request->commenter),$request->comment,$request->name);
+        if(isset($request->comment) && isset($request->name)){
             $comment->body = $request->comment;
         }
         // $comment->body =  isset($request->comment) ? $request->comment : $comment->body;
