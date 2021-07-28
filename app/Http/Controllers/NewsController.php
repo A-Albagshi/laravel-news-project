@@ -31,8 +31,9 @@ class NewsController extends Controller
     public function allNews()
     {
         return view('all-news', [
+            'categories' => Category::get(),
             'news' => News::with('category', 'author')->latest()
-                ->filter(request(['search', 'author', 'category']))
+                ->filter(request(['search', 'author', 'category','from','to']))
                 ->paginate(10)->withQueryString()
         ]);
     }

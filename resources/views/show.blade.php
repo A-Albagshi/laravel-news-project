@@ -44,7 +44,7 @@
             <x-comment-card :comments="$news->comments" :news="$news"></x-comment-card>
         </div>
         <aside class="w-full md:w-1/3 flex flex-col items-center px-3">
-            <h1 class="text-blue-900">Similar News</h1>
+            <h1 class="text-blue-900 boreder-blue-900 border-t-4">Similar News</h1>
             @foreach ($similarNews as $similar)
                 <x-news-card :news="$similar">
                 </x-news-card>

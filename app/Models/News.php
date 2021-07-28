@@ -36,6 +36,13 @@ class News extends Model
                 $query->where('name', 'like', '%' . $author . '%')
             )
         );
+        $query->when(
+            isset($filters['from']) &&  isset($filters['to']),
+            fn ($query, $date) =>
+            $query->whereBetween(
+                'created_at', [$filters['from'],$filters['to']]
+            )
+        );
     }
 
     public static function getSimilarNews($news)
