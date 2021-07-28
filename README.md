@@ -20,6 +20,12 @@
  [Live Demo](https://news-app-amclw.ondigitalocean.app/)
 
 ***
+> ## ERD
+ 
+ ![ERD](https://i.ibb.co/QDqsMGR/ERD-News.png)
+
+
+***
 
 > ## Prerequisites
 - PHP 7.4 and above
