@@ -31,7 +31,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
-                                        class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-xl font-large rounded-2xl text-white bg-red-800 hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">News</button>
+                                        class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-xl font-large rounded-2xl text-white bg-red-800 hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Delete News</button>
                                 </form>
                             </div>
                         @endauth
