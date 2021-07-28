@@ -47,7 +47,7 @@ class News extends Model
 
     public static function getSimilarNews($news)
     {
-        $similarNews = News::where('category_id', '=', $news->category_id)->where('id', '!=', $news->id)->with(['category', 'comments','author'])->get();
+        $similarNews = News::where('category_id', '=', $news->category_id)->where('id', '!=', $news->id)->with(['category', 'comments','author'])->take(3)->get();
         $News = collect($similarNews);
         if ($similarNews->count() < 2) {
             $News =[...$News,...News::with(['category', 'comments','author'])->latest()->skip(1)->where('id', '!=', $news->id)->take(2 - $similarNews->count())->get()];
